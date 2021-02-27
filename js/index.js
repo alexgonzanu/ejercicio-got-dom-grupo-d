@@ -125,3 +125,5 @@ const resumenPersonajes = elementos =>
     }));
 
 console.log(resumenPersonajes(personajes));
+
+// PARTE DEL DOOM
