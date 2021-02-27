@@ -99,3 +99,8 @@ img.card-img-top {
   right: 5px;
   top: 5px;
 }
+
+.imgEstado {
+  transform: rotate(180dg);
+}
+

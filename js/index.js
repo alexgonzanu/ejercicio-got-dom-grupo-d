@@ -157,13 +157,56 @@ const fotoPersonajes = (nombre, img) => {
   }
 }
 
-const liBase = document.querySelector(".personaje-dummy");
-const imagenPersonaje = document.querySelector(".card-img-top");
-const nombrePersonaje = document.querySelector(".nombre");
-const edadPersonaje = document.querySelector(".info > .metadata").firstElementChild;
-const estadoPersonaje = document.querySelector(".ocultarOrNo");
+const ponerInfoDeClases = (personaje, nuevoLiPersonaje, emoji) => {
+  const reinado = nuevoLiPersonaje.querySelector(".reinado");
+  const arma = nuevoLiPersonaje.querySelector(".arma");
+  const destreza = nuevoLiPersonaje.querySelector(".destreza");
+  const peloteo = nuevoLiPersonaje.querySelector(".peloteo");
+  const asesor = nuevoLiPersonaje.querySelector(".asesora");
+  const sirve = nuevoLiPersonaje.querySelector(".sirve");
+  switch (personaje.constructor.name.toLowerCase()) {
+    case "rey":
+      emoji.textContent = "👑";
+      reinado.textContent = `Años de reinado: ${personaje.añosReinado}`
+      arma.remove();
+      destreza.remove();
+      peloteo.remove();
+      asesor.remove();
+      sirve.remove();
+      break;
+    case "luchador":
+      emoji.textContent = "🗡";
+      reinado.remove();
+      arma.textContent = `Arma: ${personaje.arma}`;
+      destreza.textContent = `Destreza: ${personaje.destrezaLuchador}`;
+      peloteo.remove();
+      asesor.remove();
+      sirve.remove();
+      break;
+    case "asesor":
+      emoji.textContent = "🎓";
+      reinado.remove();
+      arma.remove();
+      destreza.remove();
+      peloteo.remove();
+      asesor.textContent = `Asesora a: ${personaje.personajeAlQueAsesora.nombre}`;
+      sirve.remove();
+      break;
+    case "escudero":
+      emoji.textContent = "🛡";
+      reinado.remove();
+      arma.remove();
+      destreza.remove();
+      peloteo.textContent = `Peloteo: ${personaje.gradoPelotismo}`
+      asesor.remove();
+      sirve.textContent = `Sirve a: ${personaje.personajeAlQueSirve.nombre}`;
+      break;
+    default:
+      break;
+  }
+}
 
-const infoPrincipal = personaje => {
+const infoPrincipal = (personaje, nombrePersonaje, edadPersonaje, estadoPersonaje, imagenPersonaje) => {
   nombrePersonaje.textContent = `${personaje.nombre} ${personaje.familia}`;
   edadPersonaje.textContent = `Edad: ${personaje.edad} años`;
   if (personaje.estado === "vivo") {
@@ -172,19 +215,31 @@ const infoPrincipal = personaje => {
   } else {
     estadoPersonaje.lastElementChild.style.visibility = "hidden";
     estadoPersonaje.firstElementChild.style.visibility = "visible";
+    imagenPersonaje.style.transform = "rotate(180deg)";
   }
 }
 
 const funcionPrincipal = () => {
+  const liBase = document.querySelector(".personaje-dummy");
   for (const personaje of personajes) {
-    const nuevoLiPersonaje = liBase.cloneNode(true);
-    nuevoLiPersonaje.classList.remove("personaje-dummy");
-    fotoPersonajes(personaje.nombre.toLowerCase(), imagenPersonaje);
-    infoPrincipal(personaje);
-    document.querySelector(".personajes").append(nuevoLiPersonaje);
+    setTimeout(() => {
+      const nuevoLiPersonaje = liBase.cloneNode(true);
+      nuevoLiPersonaje.classList.remove("personaje-dummy");
+      const imagenPersonaje = nuevoLiPersonaje.querySelector(".card-img-top");
+      fotoPersonajes(personaje.nombre.toLowerCase(), imagenPersonaje);
+      const nombrePersonaje = nuevoLiPersonaje.querySelector(".nombre");
+      const edadPersonaje = nuevoLiPersonaje.querySelector(".info > .metadata").firstElementChild;
+      const estadoPersonaje = nuevoLiPersonaje.querySelector(".ocultarOrNo");
+      const emoji = nuevoLiPersonaje.querySelector(".emoji");
+      infoPrincipal(personaje, nombrePersonaje, edadPersonaje, estadoPersonaje, imagenPersonaje);
+      ponerInfoDeClases(personaje, nuevoLiPersonaje, emoji)
+      document.querySelector(".personajes").append(nuevoLiPersonaje);
+    }, 1000 * (personajes.findIndex((persona) => persona === personaje) + 1));
   }
 }
 
 funcionPrincipal();
+
+
 
 
