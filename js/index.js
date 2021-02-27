@@ -210,12 +210,10 @@ const infoPrincipal = (personaje, nombrePersonaje, edadPersonaje, estadoPersonaj
   nombrePersonaje.textContent = `${personaje.nombre} ${personaje.familia}`;
   edadPersonaje.textContent = `Edad: ${personaje.edad} años`;
   if (personaje.estado === "vivo") {
-    estadoPersonaje.firstElementChild.style.visibility = "hidden";
-    estadoPersonaje.lastElementChild.style.visibility = "visible";
+    estadoPersonaje.firstElementChild.classList.remove("fa-thumbs-down");
   } else {
-    estadoPersonaje.lastElementChild.style.visibility = "hidden";
-    estadoPersonaje.firstElementChild.style.visibility = "visible";
-    imagenPersonaje.style.transform = "rotate(180deg)";
+    estadoPersonaje.lastElementChild.classList.remove("fa-thumbs-up");
+    imagenPersonaje.classList.add("imgEstado");
   }
 }
 
