@@ -94,11 +94,11 @@ class Escudero extends Personajes {
 }
 
 // Función 2
-const rey = new Rey("Joffrey Baratheon", "Baratheon", 20, "vivo", 5);
-const luchador = new Luchador("Jamie Lannister", "Lannister", 32, "vivo", "lanza", 10);
-const luchadora = new Luchador("Daenerys Targaryen", "Targaryen", 18, "vivo", "espada", 6);
-const asesor = new Asesor("Tyrion Lannister", "Lannister", 50, "vivo", luchadora);
-const escudero = new Escudero("Bronn", "No tiene familia", 21, "vivo", luchador, 8);
+const rey = new Rey("Joffrey", "Baratheon", 20, "vivo", 5);
+const luchador = new Luchador("Jamie", "Lannister", 32, "vivo", "lanza", 10);
+const luchadora = new Luchador("Daenerys", "Targaryen", 18, "vivo", "espada", 6);
+const asesor = new Asesor("Tyrion", "Lannister", 50, "vivo", luchadora);
+const escudero = new Escudero("Bronn", "", 21, "vivo", luchador, 8);
 
 // Función 3
 const personajes = [rey, luchador, luchadora, asesor, escudero];
@@ -127,3 +127,119 @@ const resumenPersonajes = elementos =>
 console.log(resumenPersonajes(personajes));
 
 // PARTE DEL DOOM
+
+const fotoPersonajes = (nombre, img) => {
+  switch (nombre) {
+    case "joffrey":
+      img.src = "img/joffrey.jpg";
+      img.alt = "Imagen de Joffrey con la corona del rey";
+      break;
+    case "jamie":
+      img.src = "img/jamie.jpg";
+      img.alt = "Imagen de Jamie con su atuendo de luchador y caballo";
+      break;
+    case "daenerys":
+      img.src = "img/daenerys.jpg";
+      img.alt = "Imagen de Daenerys con su atuendo de luchadora";
+      break;
+    case "tyrion":
+      img.src = "img/tyrion.jpg";
+      img.alt = "Imagen del pequeño Tyron";
+      break;
+    case "bronn":
+      img.src = "img/bronn.jpg";
+      img.alt = "Imagen de Bronn posando como escudero";
+      break;
+    default:
+      img.src = "img/no-one.jpg";
+      img.alt = "Imagen para un futuro personaje";
+      break;
+  }
+}
+
+const ponerInfoDeClases = (personaje, nuevoLiPersonaje, emoji) => {
+  const reinado = nuevoLiPersonaje.querySelector(".reinado");
+  const arma = nuevoLiPersonaje.querySelector(".arma");
+  const destreza = nuevoLiPersonaje.querySelector(".destreza");
+  const peloteo = nuevoLiPersonaje.querySelector(".peloteo");
+  const asesor = nuevoLiPersonaje.querySelector(".asesora");
+  const sirve = nuevoLiPersonaje.querySelector(".sirve");
+  switch (personaje.constructor.name.toLowerCase()) {
+    case "rey":
+      emoji.textContent = "👑";
+      reinado.textContent = `Años de reinado: ${personaje.añosReinado}`
+      arma.remove();
+      destreza.remove();
+      peloteo.remove();
+      asesor.remove();
+      sirve.remove();
+      break;
+    case "luchador":
+      emoji.textContent = "🗡";
+      reinado.remove();
+      arma.textContent = `Arma: ${personaje.arma}`;
+      destreza.textContent = `Destreza: ${personaje.destrezaLuchador}`;
+      peloteo.remove();
+      asesor.remove();
+      sirve.remove();
+      break;
+    case "asesor":
+      emoji.textContent = "🎓";
+      reinado.remove();
+      arma.remove();
+      destreza.remove();
+      peloteo.remove();
+      asesor.textContent = `Asesora a: ${personaje.personajeAlQueAsesora.nombre}`;
+      sirve.remove();
+      break;
+    case "escudero":
+      emoji.textContent = "🛡";
+      reinado.remove();
+      arma.remove();
+      destreza.remove();
+      peloteo.textContent = `Peloteo: ${personaje.gradoPelotismo}`
+      asesor.remove();
+      sirve.textContent = `Sirve a: ${personaje.personajeAlQueSirve.nombre}`;
+      break;
+    default:
+      break;
+  }
+}
+
+const infoPrincipal = (personaje, nombrePersonaje, edadPersonaje, estadoPersonaje, imagenPersonaje) => {
+  nombrePersonaje.textContent = `${personaje.nombre} ${personaje.familia}`;
+  edadPersonaje.textContent = `Edad: ${personaje.edad} años`;
+  if (personaje.estado === "vivo") {
+    estadoPersonaje.firstElementChild.style.visibility = "hidden";
+    estadoPersonaje.lastElementChild.style.visibility = "visible";
+  } else {
+    estadoPersonaje.lastElementChild.style.visibility = "hidden";
+    estadoPersonaje.firstElementChild.style.visibility = "visible";
+    imagenPersonaje.style.transform = "rotate(180deg)";
+  }
+}
+
+const funcionPrincipal = () => {
+  const liBase = document.querySelector(".personaje-dummy");
+  for (const personaje of personajes) {
+    setTimeout(() => {
+      const nuevoLiPersonaje = liBase.cloneNode(true);
+      nuevoLiPersonaje.classList.remove("personaje-dummy");
+      const imagenPersonaje = nuevoLiPersonaje.querySelector(".card-img-top");
+      fotoPersonajes(personaje.nombre.toLowerCase(), imagenPersonaje);
+      const nombrePersonaje = nuevoLiPersonaje.querySelector(".nombre");
+      const edadPersonaje = nuevoLiPersonaje.querySelector(".info > .metadata").firstElementChild;
+      const estadoPersonaje = nuevoLiPersonaje.querySelector(".ocultarOrNo");
+      const emoji = nuevoLiPersonaje.querySelector(".emoji");
+      infoPrincipal(personaje, nombrePersonaje, edadPersonaje, estadoPersonaje, imagenPersonaje);
+      ponerInfoDeClases(personaje, nuevoLiPersonaje, emoji)
+      document.querySelector(".personajes").append(nuevoLiPersonaje);
+    }, 1000 * (personajes.findIndex((persona) => persona === personaje) + 1));
+  }
+}
+
+funcionPrincipal();
+
+
+
+
