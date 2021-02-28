@@ -223,6 +223,7 @@ const funcionPrincipal = () => {
     setTimeout(() => {
       const nuevoLiPersonaje = liBase.cloneNode(true);
       nuevoLiPersonaje.classList.remove("personaje-dummy");
+      nuevoLiPersonaje.classList.add("eliminar");
       const imagenPersonaje = nuevoLiPersonaje.querySelector(".card-img-top");
       fotoPersonajes(personaje.nombre.toLowerCase(), imagenPersonaje);
       const nombrePersonaje = nuevoLiPersonaje.querySelector(".nombre");
@@ -237,6 +238,23 @@ const funcionPrincipal = () => {
 }
 
 funcionPrincipal();
+
+document.body.addEventListener("click", e => {
+  if (e.target.classList.contains("muere")) {
+    for (const personaje of personajes) {
+      const nombreCompleto = `${personaje.nombre} ${personaje.familia}`;
+      if (e.target.closest(".card-body").childNodes[1].innerText === nombreCompleto ||
+        e.target.closest(".card-body").childNodes[1].innerText === personaje.nombre) {
+        personaje.morir();
+      }
+    }
+  }
+  const eliminarElementosClonados = document.querySelectorAll(".eliminar");
+  for (const eliminar of eliminarElementosClonados) {
+    document.querySelector(".personajes").removeChild(eliminar);
+  }
+  funcionPrincipal();
+});
 
 
 
