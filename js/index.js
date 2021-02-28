@@ -248,14 +248,30 @@ document.body.addEventListener("click", e => {
         personaje.morir();
       }
     }
+    const eliminarElementosClonados = document.querySelectorAll(".eliminar");
+    for (const eliminar of eliminarElementosClonados) {
+      document.querySelector(".personajes").removeChild(eliminar);
+    }
+    funcionPrincipal();
   }
-  const eliminarElementosClonados = document.querySelectorAll(".eliminar");
-  for (const eliminar of eliminarElementosClonados) {
-    document.querySelector(".personajes").removeChild(eliminar);
-  }
-  funcionPrincipal();
 });
 
-
+document.body.addEventListener("click", e => {
+  if (e.target.classList.contains("habla")) {
+    for (const personaje of personajes) {
+      const nombreCompleto = `${personaje.nombre} ${personaje.familia}`;
+      if (e.target.closest(".card-body").childNodes[1].innerText === nombreCompleto ||
+        e.target.closest(".card-body").childNodes[1].innerText === personaje.nombre) {
+        e.target.closest(".container").nextElementSibling.childNodes[1].innerText = personaje.comunicar();
+        e.target.closest(".container").nextElementSibling.classList.add("on");
+        const img = e.target.closest(".container").nextElementSibling.childNodes[3];
+        fotoPersonajes(personaje.nombre.toLowerCase(), img);
+        setTimeout(() => {
+          e.target.closest(".container").nextElementSibling.classList.remove("on");
+        }, 2000);
+      }
+    }
+  }
+})
 
 
