@@ -36,24 +36,32 @@ class Rey extends Personajes {
 
 class Luchador extends Personajes {
   arma;
-  destrezaLuchador;
+  #destreza;
 
   constructor(nombre, family, age, status, weapon, skill) {
     super(nombre, family, age, status);
     this.arma = weapon;
-    this.destrezaLuchador = skill;
+    this.#destreza = this.destrezaPersonaje(skill);
   }
 
   comunicar() {
     return "Primero pego y luego pregunto";
   }
 
-  set destreza(numero) {
+  destrezaPersonaje(numero) {
+    let num = 0;
     if (numero < 1) {
-      numero = 1;
+      num = 1;
     } else if (numero > 10) {
-      numero = 10;
+      num = 10;
+    } else {
+      num = numero;
     }
+    return num;
+  }
+
+  set destreza(numero) {
+    this.#destreza = this.destrezaPersonaje(numero);
   }
 }
 
@@ -72,33 +80,41 @@ class Asesor extends Personajes {
 
 class Escudero extends Personajes {
   personajeAlQueSirve;
-  gradoPelotismo;
+  #gradoPelotismo;
 
   constructor(nombre, family, age, status, characterServes, pelota) {
     super(nombre, family, age, status);
     this.personajeAlQueSirve = characterServes;
-    this.gradoPelotismo = pelota;
+    this.#gradoPelotismo = this.pelotismoPersonaje(pelota);
   }
 
   set pelotismo(numero) {
-    if (numero < 1) {
-      numero = 1;
-    } else if (numero > 10) {
-      numero = 10;
-    }
+    this.#gradoPelotismo = this.pelotismoPersonaje(numero);
   }
 
   comunicar() {
     return "Soy un loser";
   }
+
+  pelotismoPersonaje(numero) {
+    let num = 0;
+    if (numero < 1) {
+      num = 1;
+    } else if (numero > 10) {
+      num = 10;
+    } else {
+      num = numero;
+    }
+    return num;
+  }
 }
 
 // Función 2
 const rey = new Rey("Joffrey", "Baratheon", 20, "vivo", 5);
-const luchador = new Luchador("Jamie", "Lannister", 32, "vivo", "lanza", 10);
+const luchador = new Luchador("Jamie", "Lannister", 32, "vivo", "lanza", 20);
 const luchadora = new Luchador("Daenerys", "Targaryen", 18, "vivo", "espada", 6);
 const asesor = new Asesor("Tyrion", "Lannister", 50, "vivo", luchadora);
-const escudero = new Escudero("Bronn", "", 21, "vivo", luchador, 8);
+const escudero = new Escudero("Bronn", "", 21, "vivo", luchador, 12);
 
 // Función 3
 const personajes = [rey, luchador, luchadora, asesor, escudero];
@@ -129,33 +145,7 @@ console.log(resumenPersonajes(personajes));
 // PARTE DEL DOOM
 
 const fotoPersonajes = (nombre, img) => {
-  img.src = `img/${nombre}.jpg`
-  /*switch (nombre) {
-    case "joffrey":
-      img.src = `img/${nombre}.jpg`//"img/joffrey.jpg";
-      img.alt = "Imagen de Joffrey con la corona del rey";
-      break;
-    case "jamie":
-      img.src = "img/jamie.jpg";
-      img.alt = "Imagen de Jamie con su atuendo de luchador y caballo";
-      break;
-    case "daenerys":
-      img.src = "img/daenerys.jpg";
-      img.alt = "Imagen de Daenerys con su atuendo de luchadora";
-      break;
-    case "tyrion":
-      img.src = "img/tyrion.jpg";
-      img.alt = "Imagen del pequeño Tyron";
-      break;
-    case "bronn":
-      img.src = "img/bronn.jpg";
-      img.alt = "Imagen de Bronn posando como escudero";
-      break;
-    default:
-      img.src = "img/no-one.jpg";
-      img.alt = "Imagen para un futuro personaje";
-      break;
-  }*/
+  img.src = `img/${nombre}.jpg`;
 }
 
 const ponerInfoDeClases = (personaje, nuevoLiPersonaje, emoji, img) => {
