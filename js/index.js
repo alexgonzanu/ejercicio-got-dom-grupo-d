@@ -129,9 +129,10 @@ console.log(resumenPersonajes(personajes));
 // PARTE DEL DOOM
 
 const fotoPersonajes = (nombre, img) => {
-  switch (nombre) {
+  img.src = `img/${nombre}.jpg`
+  /*switch (nombre) {
     case "joffrey":
-      img.src = "img/joffrey.jpg";
+      img.src = `img/${nombre}.jpg`//"img/joffrey.jpg";
       img.alt = "Imagen de Joffrey con la corona del rey";
       break;
     case "jamie":
@@ -154,10 +155,10 @@ const fotoPersonajes = (nombre, img) => {
       img.src = "img/no-one.jpg";
       img.alt = "Imagen para un futuro personaje";
       break;
-  }
+  }*/
 }
 
-const ponerInfoDeClases = (personaje, nuevoLiPersonaje, emoji) => {
+const ponerInfoDeClases = (personaje, nuevoLiPersonaje, emoji, img) => {
   const reinado = nuevoLiPersonaje.querySelector(".reinado");
   const arma = nuevoLiPersonaje.querySelector(".arma");
   const destreza = nuevoLiPersonaje.querySelector(".destreza");
@@ -166,6 +167,7 @@ const ponerInfoDeClases = (personaje, nuevoLiPersonaje, emoji) => {
   const sirve = nuevoLiPersonaje.querySelector(".sirve");
   switch (personaje.constructor.name.toLowerCase()) {
     case "rey":
+      img.alt = "Imagen de Joffrey con la corona del rey";
       emoji.textContent = "👑";
       reinado.textContent = `Años de reinado: ${personaje.añosReinado}`
       arma.remove();
@@ -175,6 +177,7 @@ const ponerInfoDeClases = (personaje, nuevoLiPersonaje, emoji) => {
       sirve.remove();
       break;
     case "luchador":
+      img.alt = `Imagen de ${personaje.nombre} con su atuendo de luchador y caballo`;
       emoji.textContent = "🗡";
       reinado.remove();
       arma.textContent = `Arma: ${personaje.arma}`;
@@ -184,6 +187,7 @@ const ponerInfoDeClases = (personaje, nuevoLiPersonaje, emoji) => {
       sirve.remove();
       break;
     case "asesor":
+      img.alt = "Imagen del pequeño Tyron";
       emoji.textContent = "🎓";
       reinado.remove();
       arma.remove();
@@ -193,6 +197,7 @@ const ponerInfoDeClases = (personaje, nuevoLiPersonaje, emoji) => {
       sirve.remove();
       break;
     case "escudero":
+      img.alt = "Imagen de Bronn posando como escudero";
       emoji.textContent = "🛡";
       reinado.remove();
       arma.remove();
@@ -231,7 +236,7 @@ const funcionPrincipal = () => {
       const estadoPersonaje = nuevoLiPersonaje.querySelector(".ocultarOrNo");
       const emoji = nuevoLiPersonaje.querySelector(".emoji");
       infoPrincipal(personaje, nombrePersonaje, edadPersonaje, estadoPersonaje, imagenPersonaje);
-      ponerInfoDeClases(personaje, nuevoLiPersonaje, emoji)
+      ponerInfoDeClases(personaje, nuevoLiPersonaje, emoji, imagenPersonaje)
       document.querySelector(".personajes").append(nuevoLiPersonaje);
     }, 1000 * (personajes.findIndex((persona) => persona === personaje) + 1));
   }
